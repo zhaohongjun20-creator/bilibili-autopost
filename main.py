@@ -37,15 +37,25 @@ def run_once(dry_run: bool):
     cfg = load_config()
     store = Store(f"{DATA_DIR}/published.db")
 
-    # ① fetch
-    keyword = random.choice(cfg["keywords"])
-    log.info("搜索关键词: %s", keyword)
-    res = search(os.environ["PEXELS_API_KEY"], keyword)
+    # ① fetch —— 逐个关键词尝试，避免单关键词无素材直接放弃
     vf = cfg["video_filter"]
-    video = pick_video(res, known_ids=store.known_ids(),
-                       min_dur=vf["min_duration"], max_dur=vf["max_duration"])
+    keywords = cfg["keywords"][:]
+    random.shuffle(keywords)
+    video = keyword = None
+    for kw in keywords:
+        log.info("搜索关键词: %s", kw)
+        try:
+            res = search(os.environ["PEXELS_API_KEY"], kw)
+        except Exception as e:
+            log.warning("搜索 %s 失败: %r，换下一个", kw, e)
+            continue
+        video = pick_video(res, known_ids=store.known_ids(),
+                           min_dur=vf["min_duration"], max_dur=vf["max_duration"])
+        if video:
+            keyword = kw
+            break
     if not video:
-        log.warning("本关键词无可用新素材，本次跳过")
+        log.warning("所有关键词均无可用新素材，本次跳过")
         return
     store.record_fetched(video["id"], keyword, video["url"])
     log.info("选中素材 pexels_id=%s 时长=%ss 作者=%s",
