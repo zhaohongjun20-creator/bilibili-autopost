@@ -18,16 +18,21 @@ def check_login(sessdata: str) -> dict:
     return {"ok": bool(data.get("isLogin")), "uname": data.get("uname", "")}
 
 async def publish(env: dict, video_path: str, cover_path: str,
-                  title: str, desc: str, tags: list, tid: int = 160) -> str:
-    """投稿，成功返回 bvid；失败抛异常。"""
+                  title: str, desc: str, tags: list, tid: int = 160,
+                  source_url: str = "") -> str:
+    """投稿，成功返回 bvid；失败抛异常。
+
+    Pexels 素材再发布按「转载」类型投稿并注明来源，合规优先。
+    """
     credential = Credential(
         sessdata=env["BILI_SESSDATA"],
         bili_jct=env["BILI_JCT"],
         dedeuserid=env.get("BILI_UID", ""),
     )
     page = video_uploader.VideoUploaderPage(path=video_path, title=title)
-    meta = video_uploader.VideoMetaData(
+    meta = video_uploader.VideoMeta(
         tid=tid, title=title, desc=desc, tags=tags, cover=cover_path,
+        original=False, source=source_url,
     )
     uploader = video_uploader.VideoUploader([page], meta, credential)
     result = await uploader.start()

@@ -101,6 +101,7 @@ def run_once(dry_run: bool):
             env=dict(os.environ), video_path=video_path, cover_path=cover_path,
             title=copy["title"], desc=copy["desc"],
             tags=copy["tags"], tid=cfg["bilibili"]["tid"],
+            source_url=video["url"],
         ))
         store.mark_published(video["id"], bvid)
         log.info("投稿成功: %s", bvid)
