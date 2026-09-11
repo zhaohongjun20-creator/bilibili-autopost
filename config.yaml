@@ -1,0 +1,23 @@
+# 每次运行随机取一个关键词搜索 Pexels
+keywords:
+  - "ocean waves"
+  - "mountain sunrise"
+  - "forest waterfall"
+  - "starry sky timelapse"
+  - "aurora"
+
+video_filter:
+  orientation: landscape   # 仅横屏
+  min_duration: 60         # 秒
+  max_duration: 180
+
+download:
+  max_height: 1080         # 取 ≤1080p 的最大画质即可
+
+bilibili:
+  tid: 160                 # 分区：生活-日常（可改）
+  tags_extra: ["风景", "治愈", "自然"]
+
+copywriter:
+  model: "glm-4-flash"     # 免费；可改 glm-4.6
+  temperature: 0.8
