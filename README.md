@@ -1,5 +1,10 @@
 # bilibili-autopost
 
+> **项目状态**：✅ 已完成历史使命（真实投稿验证通过），发布环节已演进为
+> [bili-autopost-sau](https://github.com/zhaohongjun20-creator/bili-autopost-sau)
+> （改用 [social-auto-upload](https://github.com/dreammis/social-auto-upload) 的 biliup 运行时投稿，扫码登录替代手动cookie）。
+> 本仓库留档备用。
+
 自动从免费素材库（Pexels）收集视频 → GLM 生成文案 → 自动投稿到哔哩哔哩。
 每天一条，无人值守，Windows 计划任务驱动。
 
